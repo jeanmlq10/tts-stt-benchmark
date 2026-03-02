@@ -1,0 +1,51 @@
+[
+  {
+    "id": "es_short_01",
+    "language": "es",
+    "size": "short",
+    "chars": 60,
+    "text": "Buenos días. Su cita está confirmada para el martes a las 10."
+  },
+  {
+    "id": "es_short_02",
+    "language": "es",
+    "size": "short",
+    "chars": 72,
+    "text": "El vuelo IB-3472 sale a las 14:30 h desde la terminal T4 del aeropuerto."
+  },
+  {
+    "id": "es_medium_01",
+    "language": "es",
+    "size": "medium",
+    "chars": 220,
+    "text": "La inteligencia artificial está transformando sectores como la salud, la educación y las finanzas. En 2024, más del 65 % de las empresas Fortune 500 declararon haber adoptado modelos de IA generativa, según el informe anual de McKinsey & Company."
+  },
+  {
+    "id": "es_medium_02",
+    "language": "es",
+    "size": "medium",
+    "chars": 210,
+    "text": "Para activar su cuenta, ingrese el código OTP: 4-8-2-9-1-7. El código expira en 5 minutos. Si no solicitó este acceso, contáctenos al +34 900 123 456 o escriba a soporte@empresa.com."
+  },
+  {
+    "id": "es_long_01",
+    "language": "es",
+    "size": "long",
+    "chars": 520,
+    "text": "El Producto Interior Bruto (PIB) de la zona euro creció un 0,3 % en el tercer trimestre de 2025, según datos provisionales publicados por Eurostat. La cifra supera las previsiones del consenso de analistas, que apuntaban a un avance de apenas el 0,1 %. Alemania, que venía de dos trimestres consecutivos de contracción, registró un crecimiento del 0,2 %, impulsado por las exportaciones de maquinaria y el sector automotriz. España, por su parte, lideró el crecimiento con un 0,6 %, gracias al dinamismo del turismo internacional y del consumo privado. Los mercados financieros reaccionaron positivamente: el índice Euro Stoxx 50 avanzó un 1,8 % en la jornada, mientras que el diferencial del bono español a 10 años frente al alemán se redujo hasta 80 puntos básicos."
+  },
+  {
+    "id": "es_acronyms_01",
+    "language": "es",
+    "size": "short",
+    "chars": 130,
+    "text": "El CEO de la PYME solicitó al CTO una reunión urgente con el equipo de I+D para revisar el RFP enviado a la UE antes del Q4."
+  },
+  {
+    "id": "es_numbers_01",
+    "language": "es",
+    "size": "short",
+    "chars": 115,
+    "text": "El precio unitario es $1,299.99, con un descuento del 15 %. El total con IVA (21 %) asciende a $1,323.89 por unidad."
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "id": "es_clean_01",
+    "language": "es",
+    "condition": "clean",
+    "audio_file": "es_clean_01.wav",
+    "reference": "Buenos días. Su cita está confirmada para el martes a las diez de la mañana.",
+    "duration_s": 4.2,
+    "sample_rate": 16000,
+    "note": "Place the .wav file in this directory. 16kHz mono PCM recommended."
+  },
+  {
+    "id": "es_clean_02",
+    "language": "es",
+    "condition": "clean",
+    "audio_file": "es_clean_02.wav",
+    "reference": "La inteligencia artificial está transformando sectores como la salud, la educación y las finanzas.",
+    "duration_s": 5.8,
+    "sample_rate": 16000,
+    "note": ""
+  },
+  {
+    "id": "es_noise_01",
+    "language": "es",
+    "condition": "light_noise",
+    "audio_file": "es_noise_01.wav",
+    "reference": "El precio unitario es mil doscientos noventa y nueve con noventa y nueve, con un descuento del quince por ciento.",
+    "duration_s": 6.1,
+    "sample_rate": 16000,
+    "note": "Light background café noise at -30 dBFS added to clean recording."
+  },
+  {
+    "id": "es_medium_01",
+    "language": "es",
+    "condition": "clean",
+    "audio_file": "es_medium_01.wav",
+    "reference": "El vuelo IB tres cuatro siete dos sale a las catorce treinta desde la terminal T4 del aeropuerto.",
+    "duration_s": 5.5,
+    "sample_rate": 16000,
+    "note": ""
+  }
+]

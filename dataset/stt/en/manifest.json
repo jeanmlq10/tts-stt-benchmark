@@ -1,0 +1,42 @@
+[
+  {
+    "id": "en_clean_01",
+    "language": "en",
+    "condition": "clean",
+    "audio_file": "en_clean_01.wav",
+    "reference": "Good morning. Your appointment is confirmed for Tuesday at ten o'clock.",
+    "duration_s": 3.8,
+    "sample_rate": 16000,
+    "note": "Place the .wav file in this directory. 16kHz mono PCM recommended."
+  },
+  {
+    "id": "en_clean_02",
+    "language": "en",
+    "condition": "clean",
+    "audio_file": "en_clean_02.wav",
+    "reference": "Artificial intelligence is transforming industries such as healthcare, education, and finance.",
+    "duration_s": 5.2,
+    "sample_rate": 16000,
+    "note": ""
+  },
+  {
+    "id": "en_noise_01",
+    "language": "en",
+    "condition": "light_noise",
+    "audio_file": "en_noise_01.wav",
+    "reference": "The unit price is one thousand two hundred and ninety-nine dollars and ninety-nine cents with a fifteen percent discount.",
+    "duration_s": 6.3,
+    "sample_rate": 16000,
+    "note": "Light background office noise at -30 dBFS added."
+  },
+  {
+    "id": "en_medium_01",
+    "language": "en",
+    "condition": "clean",
+    "audio_file": "en_medium_01.wav",
+    "reference": "Flight AA two zero four one departs at three forty-five PM from Terminal B at Los Angeles Airport.",
+    "duration_s": 5.9,
+    "sample_rate": 16000,
+    "note": ""
+  }
+]

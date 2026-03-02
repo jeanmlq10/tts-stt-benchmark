@@ -1,0 +1,51 @@
+[
+  {
+    "id": "en_short_01",
+    "language": "en",
+    "size": "short",
+    "chars": 58,
+    "text": "Good morning. Your appointment is confirmed for Tuesday at 10."
+  },
+  {
+    "id": "en_short_02",
+    "language": "en",
+    "size": "short",
+    "chars": 74,
+    "text": "Flight AA-2041 departs at 3:45 PM from Terminal B at Los Angeles Airport."
+  },
+  {
+    "id": "en_medium_01",
+    "language": "en",
+    "size": "medium",
+    "chars": 235,
+    "text": "Artificial intelligence is transforming industries such as healthcare, education, and finance. In 2024, more than 65% of Fortune 500 companies reported adopting generative AI models, according to McKinsey & Company's annual global survey on technology adoption."
+  },
+  {
+    "id": "en_medium_02",
+    "language": "en",
+    "size": "medium",
+    "chars": 198,
+    "text": "To activate your account, please enter the OTP code: 4-8-2-9-1-7. The code expires in 5 minutes. If you did not request this access, contact us at +1 800 555 0199 or email support@company.com."
+  },
+  {
+    "id": "en_long_01",
+    "language": "en",
+    "size": "long",
+    "chars": 530,
+    "text": "The US economy added 187,000 non-farm payroll jobs in October 2025, slightly above the consensus estimate of 175,000, according to the Bureau of Labor Statistics. The unemployment rate held steady at 3.8%, while average hourly earnings rose 0.3% month-over-month, in line with forecasts. The Federal Reserve has signaled that it will keep its benchmark interest rate in the 5.25%–5.50% range until inflation shows a sustained return toward its 2% target. Equity markets responded positively to the report: the S&P 500 gained 0.7%, the Nasdaq Composite rose 0.9%, and the 10-year Treasury yield dipped 4 basis points to 4.61%. Analysts note that the labor market remains resilient despite elevated borrowing costs, suggesting the US economy may achieve a soft landing."
+  },
+  {
+    "id": "en_acronyms_01",
+    "language": "en",
+    "size": "short",
+    "chars": 124,
+    "text": "The CEO of the SME asked the CTO for an urgent meeting with the R&D team to review the RFP sent to the EU before Q4."
+  },
+  {
+    "id": "en_numbers_01",
+    "language": "en",
+    "size": "short",
+    "chars": 108,
+    "text": "The unit price is $1,299.99 with a 15% discount. The total including VAT (20%) comes to $1,323.89 per unit."
+  }
+]

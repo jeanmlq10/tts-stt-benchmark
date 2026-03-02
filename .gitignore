@@ -1,0 +1,20 @@
+*.env
+.env
+results/
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+*.wav
+*.mp3
+*.ogg
+*.flac
+*.aac
+# keep ground-truth audio in dataset/
+!dataset/**/*.wav
+!dataset/**/*.mp3
+!dataset/**/*.flac
