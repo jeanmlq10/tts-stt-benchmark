@@ -139,7 +139,7 @@ def main(
     if text_file:
         text_files = list(text_file)
     else:
-        repo_root = Path(__file__).resolve().parent.parent.parent.parent.parent
+        repo_root = Path(__file__).resolve().parent.parent.parent.parent
         text_files = []
         for l in lang:
             candidate = repo_root / "dataset" / "tts" / l / "texts.json"

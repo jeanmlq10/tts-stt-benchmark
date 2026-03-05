@@ -116,7 +116,7 @@ def main(
     reps = repetitions or config.repetitions()
     out = output_dir or config.output_dir()
 
-    repo_root = Path(__file__).resolve().parent.parent.parent.parent.parent
+    repo_root = Path(__file__).resolve().parent.parent.parent.parent
     base_dir = audio_dir or (repo_root / "dataset" / "stt")
 
     entries = _load_manifests(lang, base_dir)
