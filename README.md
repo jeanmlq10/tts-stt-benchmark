@@ -1,6 +1,81 @@
 # TTS / STT Benchmark Harness
 
-Automated benchmark scripts to compare **Text-to-Speech** and **Speech-to-Text** providers on latency and quality. Produces a consolidated Markdown report with recommendations per use case (real-time conversation vs. offline generation, ES / EN).
+Automated benchmark harness to compare **Text-to-Speech (TTS)** and **Speech-to-Text (STT)** providers on latency and audio/transcription quality. Designed for engineering teams that need objective data to decide which provider to use in production for Spanish and English voice applications.
+
+Produces a consolidated Markdown report with p50/p90 latency tables, audio quality checks, WER/CER scores, cost projections, and per-use-case recommendations.
+
+---
+
+## What we are testing and why
+
+Voice APIs differ significantly in latency, audio naturalness, and accuracy depending on the use case. This harness was built to answer three concrete questions:
+
+1. **Which TTS provider produces the most natural audio in Spanish and English?**  
+   We synthesise 7 controlled texts per language covering different difficulty levels — short greetings, medium informational, long financial/news, acronyms, and mixed numbers/symbols — and measure both objective audio checks and subjective MOS.
+
+2. **Which STT provider transcribes most accurately, especially under real-world conditions?**  
+   We evaluate batch and streaming transcription on clean and light-noise audio, computing WER and CER against verified human ground-truth references.
+
+3. **What is the real latency cost at production scale?**  
+   We measure TTFB (time to first audio byte / first partial transcript) and total synthesis/transcription time over multiple repetitions, then aggregate to p50/p90. Streaming vs. batch comparisons are included for providers that support it.
+
+---
+
+## Current status — March 2026
+
+| Component | State |
+|-----------|-------|
+| Project scaffolding | ✅ Complete |
+| TTS adapters (OpenAI, Deepgram) | ✅ Tested live |
+| TTS adapter (Google Cloud) | ⏸ Skipped — credentials not yet configured |
+| STT adapters (Whisper, Speechmatics) | ✅ Implemented, pending audio files |
+| Metrics (WER/CER, audio checks, p50/p90) | ✅ Complete |
+| Report generator | ✅ Complete |
+| Unit tests | ✅ 35/35 passing |
+| STT audio dataset (WAV files) | 🔲 Not yet generated |
+| Full benchmark run | 🔲 Pending STT audio dataset |
+
+### Preliminary TTS observations (1 repetition, no streaming, EN only)
+
+| Provider | Texts | Errors | Latency range |
+|----------|-------|--------|---------------|
+| OpenAI `tts-1-hd` | 7/7 | 0 | 4.0 s – 8.3 s |
+| Deepgram `aura-2` | 7/7 | 0 | 3.5 s – 29.1 s |
+
+> **Note (Deepgram):** The 29 s latency on the long text (~530 chars) is notably high and may indicate throttling or a cold-start penalty. This will be confirmed with multiple repetitions in the full benchmark run.
+
+> **Note (latency):** These numbers are non-streaming batch requests, which represent the worst-case latency scenario. Streaming TTFB values are expected to be significantly lower (typically 200–800 ms for short texts).
+
+---
+
+---
+
+## Test dataset
+
+### TTS texts (7 per language, ES + EN)
+
+| ID | Category | Chars | Purpose |
+|----|----------|-------|---------|
+| `*_short_01` | Short greeting | ~60 | Typical IVR / assistant opener |
+| `*_short_02` | Short + codes | ~70 | Flight info with codes and times |
+| `*_medium_01` | Medium informational | ~220–235 | AI/tech news paragraph |
+| `*_medium_02` | Medium + special | ~200–210 | OTP code, phone numbers, emails |
+| `*_long_01` | Long financial/news | ~520–530 | Economic bulletin with percentages and figures |
+| `*_acronyms_01` | Acronyms | ~115–130 | CEO, CTO, R&D, RFP, EU, Q4 — abbreviation stress test |
+| `*_numbers_01` | Numbers + symbols | ~105–115 | Prices, decimals, currency, VAT |
+
+These categories are designed to stress-test provider weaknesses: acronyms and mixed numbers are known pain points for TTS naturalness, while long texts reveal latency scaling behavior.
+
+### STT audio files (4 per language, ES + EN)
+
+| ID | Condition | Ground-truth type |
+|----|-----------|-------------------|
+| `*_clean_01` | Clean speech | Short greeting |
+| `*_clean_02` | Clean speech | Medium informational |
+| `*_noise_01` | Light background noise (−30 dBFS) | Numbers / prices |
+| `*_medium_01` | Clean speech | Flight codes / times |
+
+Audio files must be **16 kHz mono PCM WAV**. The `reference` field in each manifest contains the verified human transcription used as ground-truth for WER/CER computation.
 
 ---
 
@@ -94,12 +169,12 @@ cp .env.example .env
 
 Required environment variables:
 
-| Variable | Provider |
-|----------|----------|
-| `OPENAI_API_KEY` | OpenAI TTS + Whisper |
-| `DEEPGRAM_API_KEY` | Deepgram Aura |
-| `GOOGLE_APPLICATION_CREDENTIALS` | Google Cloud TTS |
-| `SPEECHMATICS_API_KEY` | Speechmatics |
+| Variable | Provider | Required |
+|----------|----------|----------|
+| `OPENAI_API_KEY` | OpenAI TTS + Whisper | ✅ |
+| `DEEPGRAM_API_KEY` | Deepgram Aura | ✅ |
+| `GOOGLE_APPLICATION_CREDENTIALS` | Google Cloud TTS | Optional — Google TTS is automatically skipped if not set |
+| `SPEECHMATICS_API_KEY` | Speechmatics | ✅ |
 
 ### 3. Add STT audio files *(optional but required for WER/CER)*
 
