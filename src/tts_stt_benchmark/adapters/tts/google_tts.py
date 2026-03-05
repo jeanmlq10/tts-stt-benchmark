@@ -50,6 +50,12 @@ class GoogleTTSAdapter(TTSAdapter):
     @property
     def client(self):
         if self._client is None:
+            from tts_stt_benchmark import config as _cfg
+            if not _cfg.google_credentials_available():
+                raise EnvironmentError(
+                    "Google TTS skipped: GOOGLE_APPLICATION_CREDENTIALS is not set or "
+                    "the file does not exist. Set the variable in .env to enable Google TTS."
+                )
             # Import here to allow the module to load without credentials
             from google.cloud import texttospeech_v1beta1 as tts  # type: ignore[import-untyped]
             self._client = tts.TextToSpeechAsyncClient()

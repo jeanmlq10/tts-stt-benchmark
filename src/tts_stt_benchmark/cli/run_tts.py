@@ -40,8 +40,22 @@ _DEFAULT_MODELS = {
 
 
 def _load_adapter(provider: str, model: str | None):
-    """Dynamically import and instantiate the adapter class."""
+    """Dynamically import and instantiate the adapter class.
+
+    Returns None (and prints a warning) if the provider cannot be used due to
+    missing credentials, so the benchmark can continue with the remaining providers.
+    """
     import importlib
+    from tts_stt_benchmark import config as _cfg
+
+    # Fast-fail check for Google before attempting to import the heavy SDK
+    if provider == "google" and not _cfg.google_credentials_available():
+        console.print(
+            "[yellow]⚠  Google TTS skipped: GOOGLE_APPLICATION_CREDENTIALS is not set "
+            "or the file does not exist.[/yellow]"
+        )
+        return None
+
     fqn = _PROVIDER_MAP[provider]
     module_path, class_name = fqn.rsplit(".", 1)
     module = importlib.import_module(module_path)
@@ -142,10 +156,15 @@ def main(
         console.print("[red]No texts found. Check --lang and --text_file options.[/red]")
         raise SystemExit(1)
 
-    adapters = [_load_adapter(p, model) for p in provider]
+    adapters = [a for p in provider if (a := _load_adapter(p, model)) is not None]
 
+    if not adapters:
+        console.print("[red]No TTS adapters available. Check your API keys and credentials.[/red]")
+        raise SystemExit(1)
+
+    provider_names = ", ".join(a.provider for a in adapters)
     console.print(
-        f"[bold]TTS Benchmark[/bold]: {len(adapters)} provider(s), "
+        f"[bold]TTS Benchmark[/bold]: {len(adapters)} provider(s) [{provider_names}], "
         f"{len(texts)} text(s), {reps} repetition(s), streaming={streaming}"
     )
 

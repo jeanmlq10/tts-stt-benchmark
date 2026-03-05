@@ -1,5 +1,6 @@
 *.env
 .env
+credentials/
 results/
 __pycache__/
 *.py[cod]

@@ -42,6 +42,17 @@ def google_credentials_path() -> str | None:
     return _get("GOOGLE_APPLICATION_CREDENTIALS")
 
 
+def google_credentials_available() -> bool:
+    """Return True only if the credentials env var is set AND the file exists on disk."""
+    path = google_credentials_path()
+    if not path:
+        return False
+    # Accept a placeholder value like the default in .env.example
+    if path == "/path/to/service-account.json":
+        return False
+    return Path(path).is_file()
+
+
 def speechmatics_api_key() -> str:
     return _require("SPEECHMATICS_API_KEY")
 
