@@ -25,10 +25,18 @@ _VOICE_MAP: dict[str, dict[str, str]] = {
     "gemini-2.5-flash-preview-tts": {
         "en": "en-US-Chirp3-HD-Charon",
         "es": "es-ES-Chirp3-HD-Charon",
+        "fr": "fr-FR-Chirp3-HD-Charon",
+        "de": "de-DE-Chirp3-HD-Charon",
+        "it": "it-IT-Chirp3-HD-Charon",
+        "pt": "pt-BR-Chirp3-HD-Charon",
     },
     "neural2": {
         "en": "en-US-Neural2-J",
         "es": "es-ES-Neural2-B",
+        "fr": "fr-FR-Neural2-A",
+        "de": "de-DE-Neural2-B",
+        "it": "it-IT-Neural2-A",
+        "pt": "pt-BR-Neural2-A",
     },
 }
 

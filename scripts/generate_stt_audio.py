@@ -39,7 +39,14 @@ DATASET_STT = REPO_ROOT / "dataset" / "stt"
 TARGET_SR = 16_000          # Hz — required by all STT adapters
 NOISE_DBFS = -30.0          # dBFS for light_noise condition
 TTS_MODEL = "tts-1"         # cheaper model is fine for ground-truth audio
-VOICE_MAP = {"es": "alloy", "en": "alloy"}   # neutral voice for both langs
+VOICE_MAP = {
+    "en": "alloy",
+    "es": "alloy",
+    "fr": "alloy",
+    "de": "alloy",
+    "it": "alloy",
+    "pt": "alloy",
+}   # neutral voice for all supported languages
 
 
 # ── helpers ──────────────────────────────────────────────────────────────────
@@ -122,8 +129,8 @@ def _process_entry(entry: dict, lang_dir: Path, client, dry_run: bool) -> bool:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Generate STT ground-truth WAV files.")
-    parser.add_argument("--lang", choices=["es", "en"], default=None,
-                        help="Generate only for this language (default: both).")
+    parser.add_argument("--lang", choices=["en", "es", "fr", "de", "it", "pt"], default=None,
+                        help="Generate only for this language (default: all).")
     parser.add_argument("--dry-run", action="store_true",
                         help="Print plan without making API calls.")
     args = parser.parse_args()
@@ -142,7 +149,7 @@ def main() -> int:
     else:
         client = None
 
-    langs = [args.lang] if args.lang else ["es", "en"]
+    langs = [args.lang] if args.lang else ["en", "es", "fr", "de", "it", "pt"]
     total = ok = 0
 
     for lang in langs:

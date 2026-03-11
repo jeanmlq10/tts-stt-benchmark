@@ -1,0 +1,42 @@
+[
+  {
+    "id": "fr_clean_01",
+    "language": "fr",
+    "condition": "clean",
+    "audio_file": "fr_clean_01.wav",
+    "reference": "Bonjour, votre rendez-vous est confirmé pour demain à neuf heures du matin.",
+    "duration_s": 4.0,
+    "sample_rate": 16000,
+    "note": "16kHz mono PCM."
+  },
+  {
+    "id": "fr_clean_02",
+    "language": "fr",
+    "condition": "clean",
+    "audio_file": "fr_clean_02.wav",
+    "reference": "L'intelligence artificielle transforme des secteurs comme la santé, l'éducation et la finance.",
+    "duration_s": 5.5,
+    "sample_rate": 16000,
+    "note": ""
+  },
+  {
+    "id": "fr_noise_01",
+    "language": "fr",
+    "condition": "light_noise",
+    "audio_file": "fr_noise_01.wav",
+    "reference": "Le prix unitaire est de mille deux cent quatre-vingt-dix-neuf euros avec une remise de quinze pour cent.",
+    "duration_s": 6.2,
+    "sample_rate": 16000,
+    "note": "Light background office noise at -30 dBFS added."
+  },
+  {
+    "id": "fr_medium_01",
+    "language": "fr",
+    "condition": "clean",
+    "audio_file": "fr_medium_01.wav",
+    "reference": "Le vol Air France mille deux cent trente-quatre à destination de Paris décollera à quatorze heures trente-cinq depuis la porte B vingt-deux.",
+    "duration_s": 6.8,
+    "sample_rate": 16000,
+    "note": ""
+  }
+]

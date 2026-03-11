@@ -21,9 +21,15 @@ from tts_stt_benchmark.metrics.audio_checks import analyse_audio
 
 
 # Mapping: language code → recommended voice
+# Note: OpenAI voices are language-agnostic but have different prosody strengths.
+# nova / shimmer tend to work better for Romance languages; onyx for German.
 _VOICE_MAP: dict[str, str] = {
-    "es": "alloy",
     "en": "nova",
+    "es": "alloy",   # ⚠ English voice; no native ES voice in OpenAI TTS as of 2025-03
+    "fr": "nova",    # nova handles French reasonably well
+    "de": "onyx",    # onyx has better German prosody than nova
+    "it": "nova",    # nova handles Italian reasonably well
+    "pt": "nova",    # nova handles Portuguese (BR) reasonably well
 }
 
 # Cost per 1 000 000 characters (USD) as of 2025-03

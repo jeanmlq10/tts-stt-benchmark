@@ -1,0 +1,42 @@
+[
+  {
+    "id": "pt_clean_01",
+    "language": "pt",
+    "condition": "clean",
+    "audio_file": "pt_clean_01.wav",
+    "reference": "Bom dia, o seu compromisso de amanhã às nove horas está confirmado.",
+    "duration_s": 4.0,
+    "sample_rate": 16000,
+    "note": "16kHz mono PCM."
+  },
+  {
+    "id": "pt_clean_02",
+    "language": "pt",
+    "condition": "clean",
+    "audio_file": "pt_clean_02.wav",
+    "reference": "A inteligência artificial está transformando setores como saúde, educação e finanças.",
+    "duration_s": 5.3,
+    "sample_rate": 16000,
+    "note": ""
+  },
+  {
+    "id": "pt_noise_01",
+    "language": "pt",
+    "condition": "light_noise",
+    "audio_file": "pt_noise_01.wav",
+    "reference": "O preço unitário é de mil duzentos e noventa e nove reais com um desconto de quinze por cento.",
+    "duration_s": 6.0,
+    "sample_rate": 16000,
+    "note": "Light background office noise at -30 dBFS added."
+  },
+  {
+    "id": "pt_medium_01",
+    "language": "pt",
+    "condition": "clean",
+    "audio_file": "pt_medium_01.wav",
+    "reference": "O voo LATAM três zero quarenta e cinco para São Paulo decolará às quatorze horas e trinta e cinco pelo portão B vinte e dois.",
+    "duration_s": 6.7,
+    "sample_rate": 16000,
+    "note": ""
+  }
+]

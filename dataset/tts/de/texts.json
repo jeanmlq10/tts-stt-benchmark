@@ -1,0 +1,51 @@
+[
+  {
+    "id": "de_short_01",
+    "language": "de",
+    "size": "short",
+    "chars": 63,
+    "text": "Guten Morgen, Ihr Termin für morgen um neun Uhr ist bestätigt."
+  },
+  {
+    "id": "de_short_02",
+    "language": "de",
+    "size": "short",
+    "chars": 73,
+    "text": "Vielen Dank für Ihren Anruf. Ein Mitarbeiter wird sich gleich bei Ihnen melden."
+  },
+  {
+    "id": "de_medium_01",
+    "language": "de",
+    "size": "medium",
+    "chars": 225,
+    "text": "Ihr verfügbares Guthaben beträgt zweitausenddreihundertfünfundvierzig Euro und sechzig Cent. Ihre nächste Lastschrift erfolgt am fünfzehnten des nächsten Monats in Höhe von einhundertzwanzig Euro."
+  },
+  {
+    "id": "de_medium_02",
+    "language": "de",
+    "size": "medium",
+    "chars": 213,
+    "text": "Wir möchten Sie darüber informieren, dass Ihre Bestellung mit der Nummer A-4-7-8-2 versandt wurde. Die Lieferung ist für Mittwoch bis Freitag dieser Woche zwischen acht und achtzehn Uhr geplant."
+  },
+  {
+    "id": "de_long_01",
+    "language": "de",
+    "size": "long",
+    "chars": 436,
+    "text": "Willkommen bei unserem Vermögensverwaltungsservice. Bevor wir beginnen, möchten wir Sie darauf hinweisen, dass vergangene Wertentwicklungen keine Garantie für zukünftige Ergebnisse darstellen. Investitionen an der Börse sind mit Risiken verbunden, einschließlich des Risikos eines Kapitalverlusts. Unser Team zertifizierter Berater steht Ihnen von Montag bis Freitag von neun bis achtzehn Uhr zur Verfügung."
+  },
+  {
+    "id": "de_numbers_01",
+    "language": "de",
+    "size": "short",
+    "chars": 178,
+    "text": "Flug LH-4521 nach Frankfurt am Main startet um 14:35 Uhr von Gate B-22. Der aktuelle Wechselkurs beträgt 1,0842 US-Dollar pro Euro. Bitte rufen Sie 0800-123-456 für Unterstützung an."
+  },
+  {
+    "id": "de_acronyms_01",
+    "language": "de",
+    "size": "short",
+    "chars": 156,
+    "text": "Der CEO des KMU hat einen Antrag bei der EZB über die API des ERP-Systems eingereicht. Der IFRS-Bericht wurde vom CFO genehmigt und vor Börsenschluss an die BaFin übermittelt."
+  }
+]

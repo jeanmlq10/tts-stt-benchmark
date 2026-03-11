@@ -1,0 +1,51 @@
+[
+  {
+    "id": "it_short_01",
+    "language": "it",
+    "size": "short",
+    "chars": 62,
+    "text": "Buongiorno, il suo appuntamento di domani alle nove è confermato."
+  },
+  {
+    "id": "it_short_02",
+    "language": "it",
+    "size": "short",
+    "chars": 55,
+    "text": "Grazie per aver chiamato. Un operatore risponderà a breve."
+  },
+  {
+    "id": "it_medium_01",
+    "language": "it",
+    "size": "medium",
+    "chars": 207,
+    "text": "Il suo saldo disponibile è di duemilatrecentoquarantacinque euro e sessanta centesimi. Il prossimo addebito automatico avverrà il quindici del mese prossimo per un importo di centoventi euro."
+  },
+  {
+    "id": "it_medium_02",
+    "language": "it",
+    "size": "medium",
+    "chars": 196,
+    "text": "La informiamo che il suo ordine numero A-4-7-8-2 è stato spedito. La consegna è prevista tra mercoledì e venerdì di questa settimana, tra le otto e le diciotto."
+  },
+  {
+    "id": "it_long_01",
+    "language": "it",
+    "size": "long",
+    "chars": 469,
+    "text": "Benvenuto nel nostro servizio di gestione patrimoniale. Prima di iniziare, desideriamo informarla che le performance passate non sono indicative di quelle future. Gli investimenti in borsa comportano rischi, incluso il rischio di perdita del capitale. Il nostro team di consulenti certificati è disponibile dal lunedì al venerdì, dalle nove alle diciotto, per supportarla nelle sue decisioni di investimento."
+  },
+  {
+    "id": "it_numbers_01",
+    "language": "it",
+    "size": "short",
+    "chars": 175,
+    "text": "Il volo AZ-1234 per Roma Fiumicino partirà alle 14:35 dal gate B-22. Il tasso di cambio attuale è di 1,0842 dollari per euro. Si prega di chiamare il numero 800-123-456 per assistenza."
+  },
+  {
+    "id": "it_acronyms_01",
+    "language": "it",
+    "size": "short",
+    "chars": 163,
+    "text": "Il CEO della PMI ha inviato una richiesta alla BCE tramite l'API del sistema ERP. Il report IFRS è stato approvato dal CFO e trasmesso alla Consob prima della chiusura del mercato."
+  }
+]

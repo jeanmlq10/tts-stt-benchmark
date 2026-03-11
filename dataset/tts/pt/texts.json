@@ -1,0 +1,51 @@
+[
+  {
+    "id": "pt_short_01",
+    "language": "pt",
+    "size": "short",
+    "chars": 62,
+    "text": "Bom dia, o seu compromisso de amanhã às nove horas está confirmado."
+  },
+  {
+    "id": "pt_short_02",
+    "language": "pt",
+    "size": "short",
+    "chars": 55,
+    "text": "Obrigado pela sua ligação. Um atendente responderá em breve."
+  },
+  {
+    "id": "pt_medium_01",
+    "language": "pt",
+    "size": "medium",
+    "chars": 209,
+    "text": "O seu saldo disponível é de dois mil trezentos e quarenta e cinco reais e sessenta centavos. O próximo débito automático ocorrerá no dia quinze do mês que vem no valor de cento e vinte reais."
+  },
+  {
+    "id": "pt_medium_02",
+    "language": "pt",
+    "size": "medium",
+    "chars": 188,
+    "text": "Informamos que o seu pedido número A-4-7-8-2 foi despachado. A entrega está prevista entre quarta e sexta-feira desta semana, entre as oito e as dezoito horas."
+  },
+  {
+    "id": "pt_long_01",
+    "language": "pt",
+    "size": "long",
+    "chars": 489,
+    "text": "Bem-vindo ao nosso serviço de gestão de patrimônio. Antes de começar, gostaríamos de informar que rentabilidade passada não é garantia de rentabilidade futura. Investimentos em renda variável envolvem riscos, incluindo o risco de perda do capital investido. Nossa equipe de assessores certificados pela CVM está disponível de segunda a sexta-feira, das nove às dezoito horas, para auxiliá-lo em suas decisões de investimento."
+  },
+  {
+    "id": "pt_numbers_01",
+    "language": "pt",
+    "size": "short",
+    "chars": 182,
+    "text": "O voo LA-3045 com destino a São Paulo-Guarulhos decolará às 14h35 pelo portão B-22. A cotação atual é de 5,0842 reais por dólar. Ligue para 0800-123-456 para obter assistência."
+  },
+  {
+    "id": "pt_acronyms_01",
+    "language": "pt",
+    "size": "short",
+    "chars": 158,
+    "text": "O CEO da PME enviou uma solicitação ao Banco Central via API do sistema ERP. O relatório IFRS foi aprovado pelo CFO e transmitido à CVM antes do fechamento do mercado."
+  }
+]

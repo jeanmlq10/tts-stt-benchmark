@@ -1,0 +1,42 @@
+[
+  {
+    "id": "de_clean_01",
+    "language": "de",
+    "condition": "clean",
+    "audio_file": "de_clean_01.wav",
+    "reference": "Guten Morgen, Ihr Termin für morgen um neun Uhr ist bestätigt.",
+    "duration_s": 3.8,
+    "sample_rate": 16000,
+    "note": "16kHz mono PCM."
+  },
+  {
+    "id": "de_clean_02",
+    "language": "de",
+    "condition": "clean",
+    "audio_file": "de_clean_02.wav",
+    "reference": "Künstliche Intelligenz transformiert Branchen wie Gesundheit, Bildung und Finanzen.",
+    "duration_s": 5.2,
+    "sample_rate": 16000,
+    "note": ""
+  },
+  {
+    "id": "de_noise_01",
+    "language": "de",
+    "condition": "light_noise",
+    "audio_file": "de_noise_01.wav",
+    "reference": "Der Stückpreis beträgt eintausendzweihundertneunundneunzig Euro mit einem Rabatt von fünfzehn Prozent.",
+    "duration_s": 6.0,
+    "sample_rate": 16000,
+    "note": "Light background office noise at -30 dBFS added."
+  },
+  {
+    "id": "de_medium_01",
+    "language": "de",
+    "condition": "clean",
+    "audio_file": "de_medium_01.wav",
+    "reference": "Flug Lufthansa vier fünf zwei eins nach Frankfurt startet um vierzehn Uhr fünfunddreißig von Gate B zweiundzwanzig.",
+    "duration_s": 6.5,
+    "sample_rate": 16000,
+    "note": ""
+  }
+]

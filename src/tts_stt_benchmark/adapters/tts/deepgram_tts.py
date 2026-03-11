@@ -21,9 +21,15 @@ from tts_stt_benchmark.metrics.audio_checks import analyse_audio
 _BASE_URL = "https://api.deepgram.com/v1/speak"
 
 # Deepgram Aura voices with language affinity
+# ⚠ As of 2025-03, Deepgram Aura-2 only offers English voices (all end in -en).
+# Non-English entries fall back to the best English voice until native voices are released.
 _VOICE_MAP: dict[str, str] = {
     "en": "aura-2-thalia-en",
-    "es": "aura-2-andromeda-en",  # closest; Aura-2 ES voices TBD
+    "es": "aura-2-andromeda-en",  # ⚠ no native ES voice; Aura-2 ES TBD
+    "fr": "aura-2-andromeda-en",  # ⚠ no native FR voice; Aura-2 FR TBD
+    "de": "aura-2-andromeda-en",  # ⚠ no native DE voice; Aura-2 DE TBD
+    "it": "aura-2-andromeda-en",  # ⚠ no native IT voice; Aura-2 IT TBD
+    "pt": "aura-2-andromeda-en",  # ⚠ no native PT voice; Aura-2 PT TBD
 }
 
 # Cost per 1k characters (USD) as of 2025-03 — Deepgram Pay-as-you-go

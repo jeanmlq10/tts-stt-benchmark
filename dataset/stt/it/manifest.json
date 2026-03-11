@@ -1,0 +1,42 @@
+[
+  {
+    "id": "it_clean_01",
+    "language": "it",
+    "condition": "clean",
+    "audio_file": "it_clean_01.wav",
+    "reference": "Buongiorno, il suo appuntamento di domani alle nove è confermato.",
+    "duration_s": 3.9,
+    "sample_rate": 16000,
+    "note": "16kHz mono PCM."
+  },
+  {
+    "id": "it_clean_02",
+    "language": "it",
+    "condition": "clean",
+    "audio_file": "it_clean_02.wav",
+    "reference": "L'intelligenza artificiale sta trasformando settori come la salute, l'istruzione e la finanza.",
+    "duration_s": 5.4,
+    "sample_rate": 16000,
+    "note": ""
+  },
+  {
+    "id": "it_noise_01",
+    "language": "it",
+    "condition": "light_noise",
+    "audio_file": "it_noise_01.wav",
+    "reference": "Il prezzo unitario è di mille duecento novantanove euro con uno sconto del quindici per cento.",
+    "duration_s": 5.8,
+    "sample_rate": 16000,
+    "note": "Light background office noise at -30 dBFS added."
+  },
+  {
+    "id": "it_medium_01",
+    "language": "it",
+    "condition": "clean",
+    "audio_file": "it_medium_01.wav",
+    "reference": "Il volo Alitalia uno due tre quattro per Roma partirà alle quattordici e trentacinque dal gate B ventidue.",
+    "duration_s": 6.3,
+    "sample_rate": 16000,
+    "note": ""
+  }
+]

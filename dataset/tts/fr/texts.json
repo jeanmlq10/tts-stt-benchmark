@@ -1,0 +1,51 @@
+[
+  {
+    "id": "fr_short_01",
+    "language": "fr",
+    "size": "short",
+    "chars": 72,
+    "text": "Bonjour, votre rendez-vous est confirmé pour demain à neuf heures du matin."
+  },
+  {
+    "id": "fr_short_02",
+    "language": "fr",
+    "size": "short",
+    "chars": 75,
+    "text": "Merci de votre appel. Un conseiller va vous répondre dans quelques instants."
+  },
+  {
+    "id": "fr_medium_01",
+    "language": "fr",
+    "size": "medium",
+    "chars": 221,
+    "text": "Votre solde disponible est de deux mille trois cent quarante-cinq euros et soixante centimes. Votre prochain prélèvement automatique aura lieu le quinze du mois prochain pour un montant de cent vingt euros."
+  },
+  {
+    "id": "fr_medium_02",
+    "language": "fr",
+    "size": "medium",
+    "chars": 218,
+    "text": "Nous vous informons que votre commande numéro A-4-7-8-2 a bien été expédiée. La livraison est prévue entre le mercredi et le vendredi de cette semaine, entre huit heures et dix-huit heures."
+  },
+  {
+    "id": "fr_long_01",
+    "language": "fr",
+    "size": "long",
+    "chars": 487,
+    "text": "Bienvenue dans notre service de gestion de patrimoine. Avant de commencer, nous souhaitons vous informer que les performances passées ne préjugent pas des performances futures. Les investissements en bourse comportent des risques, notamment le risque de perte en capital. Notre équipe de conseillers certifiés AMF est disponible du lundi au vendredi, de neuf heures à dix-huit heures, pour vous accompagner dans vos décisions d'investissement."
+  },
+  {
+    "id": "fr_numbers_01",
+    "language": "fr",
+    "size": "short",
+    "chars": 188,
+    "text": "Le vol AF-1234 à destination de Paris-Charles de Gaulle décollera à 14h35 depuis la porte B-22. Le taux de change actuel est de 1,0842 dollar pour un euro. Veuillez composer le 0800-123-456 pour toute assistance."
+  },
+  {
+    "id": "fr_acronyms_01",
+    "language": "fr",
+    "size": "short",
+    "chars": 152,
+    "text": "Le PDG de la PME a soumis un dossier à la BCE via l'API du système ERP. Le rapport IFRS a été validé par le DAF et transmis à l'AMF avant la clôture du marché."
+  }
+]
