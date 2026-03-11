@@ -75,9 +75,9 @@ class TestBuildReport:
 
     def test_contains_required_sections(self, results_dir_with_data):
         report = build_report(results_dir_with_data)
-        assert "## 1. TTS Results" in report
-        assert "## 2. STT Results" in report
-        assert "## 3. Executive Summary" in report
+        assert "## 1. Resultados TTS" in report
+        assert "## 2. Resultados STT" in report
+        assert "## 3. Resumen Ejecutivo" in report
         assert "MOS" in report
 
     def test_contains_provider_names(self, results_dir_with_data):
@@ -86,11 +86,11 @@ class TestBuildReport:
         assert "openai_whisper_standard" in report
 
     def test_empty_results_dir(self, tmp_path: Path):
-        """Report should still build with no data."""
+        """El reporte debe generarse incluso sin datos."""
         report = build_report(tmp_path)
-        assert "TTS / STT Benchmark Report" in report
-        assert "_No TTS results found._" in report
-        assert "_No STT results found._" in report
+        assert "Reporte de Benchmark TTS / STT" in report
+        assert "_No se encontraron resultados TTS._" in report
+        assert "_No se encontraron resultados STT._" in report
 
     def test_save_report_creates_file(self, results_dir_with_data):
         out_path = results_dir_with_data / "test_report.md"
@@ -98,4 +98,4 @@ class TestBuildReport:
         assert saved == out_path
         assert out_path.exists()
         content = out_path.read_text()
-        assert "TTS / STT Benchmark Report" in content
+        assert "Reporte de Benchmark TTS / STT" in content

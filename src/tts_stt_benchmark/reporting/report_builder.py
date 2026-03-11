@@ -1,6 +1,6 @@
 """
-Report generator: reads all results JSON files under a results directory,
-aggregates statistics, and produces a Markdown report.
+Generador de reportes: lee todos los archivos results.json bajo un directorio de resultados,
+agrega estadísticas y produce un reporte en Markdown.
 """
 
 from __future__ import annotations
@@ -49,7 +49,7 @@ def _pct(value: float | None) -> str:
 # ─── Data loading ─────────────────────────────────────────────────────────────
 
 def _load_all_results(results_dir: Path, kind: str) -> list[dict]:
-    """Load all results.json files under results_dir/kind/*/results.json."""
+    """Carga todos los archivos results.json bajo results_dir/kind/*/results.json."""
     rows: list[dict] = []
     pattern = results_dir / kind / "**" / "results.json"
     for path in sorted(results_dir.glob(f"{kind}/**/results.json")):
@@ -66,7 +66,7 @@ def _aggregate_tts(rows: list[dict]) -> pd.DataFrame:
 
     df = pd.json_normalize(rows)
 
-    # Derived columns
+    # Columnas derivadas
     df["provider_model"] = df["provider"] + "/" + df["model"]
     df["ttfb"] = df.get("latency.time_to_first_byte_s", pd.Series([None] * len(df)))
     df["total"] = df.get("latency.total_synthesis_s", pd.Series([None] * len(df)))
@@ -75,7 +75,7 @@ def _aggregate_tts(rows: list[dict]) -> pd.DataFrame:
     df["clipping"] = df.get("quality.clipping_detected", pd.Series([False] * len(df)))
     df["abrupt_cut"] = df.get("quality.has_abrupt_cut", pd.Series([False] * len(df)))
 
-    # Group by provider_model + language + text_id
+    # Agrupar por provider_model + language + text_id
     groups = df.groupby(["provider_model", "language", "text_id"])
 
     summary_rows: list[dict] = []
@@ -85,7 +85,7 @@ def _aggregate_tts(rows: list[dict]) -> pd.DataFrame:
         clipping_count = int(grp["clipping"].sum())
         abrupt_count = int(grp["abrupt_cut"].sum())
         n = len(grp)
-        # Cost estimate (per call, based on char count)
+        # Estimación de costo (por llamada, basado en cantidad de caracteres)
         chars = grp["text_chars"].iloc[0] if "text_chars" in grp.columns else 0
         cost_per_1m = TTS_COST_PER_1M_CHARS.get(pm, 0.0)
         cost_per_call = (chars / 1_000_000) * cost_per_1m
@@ -160,7 +160,7 @@ def _aggregate_stt(rows: list[dict]) -> pd.DataFrame:
 
 def _df_to_md(df: pd.DataFrame) -> str:
     if df.empty:
-        return "_No data available._\n"
+        return "_Sin datos disponibles._\n"
     return df.to_markdown(index=False, floatfmt=".4f")
 
 
@@ -175,20 +175,20 @@ def _fmt(v: float, decimals: int = 2) -> str:
 
 def _quality_label(wer: float) -> str:
     if wer < 0.05:
-        return "excellent"
+        return "excelente"
     if wer < 0.15:
-        return "good"
+        return "bueno"
     if wer < 0.30:
-        return "acceptable"
-    return "poor"
+        return "aceptable"
+    return "deficiente"
 
 
 def _compute_findings(tts_df: pd.DataFrame, stt_df: pd.DataFrame) -> list[str]:
-    """Generate the Key Findings section from aggregated benchmark data."""
+    """Genera la sección de Hallazgos Clave a partir de los datos agregados del benchmark."""
     lines: list[str] = []
 
-    # ── TTS Latency ───────────────────────────────────────────────────────────
-    lines += ["#### TTS — Latency", ""]
+    # ── TTS Latencia ──────────────────────────────────────────────────────────
+    lines += ["#### TTS — Latencia", ""]
 
     if not tts_df.empty:
         # Filter out runs that had errors for ALL repetitions
@@ -207,10 +207,10 @@ def _compute_findings(tts_df: pd.DataFrame, stt_df: pd.DataFrame) -> list[str]:
                 best = grp.loc[grp["p50"].idxmin()]
                 worst = grp.loc[grp["p50"].idxmax()]
                 lines.append(
-                    f"- **{lang.upper()} — fastest TTS (median p50 across all texts):** "
-                    f"`{best['provider']}` at **{_fmt(best['p50'])}s** total. "
-                    f"Slowest: `{worst['provider']}` at {_fmt(worst['p50'])}s "
-                    f"({_fmt((worst['p50'] - best['p50']) / best['p50'] * 100, 0)}% slower)."
+                    f"- **{lang.upper()} — TTS más rápido (mediana p50 sobre todos los textos):** "
+                    f"`{best['provider']}` en **{_fmt(best['p50'])}s** total. "
+                    f"Más lento: `{worst['provider']}` en {_fmt(worst['p50'])}s "
+                    f"({_fmt((worst['p50'] - best['p50']) / best['p50'] * 100, 0)}% más lento)."
                 )
 
             # TTFB (streaming)
@@ -219,45 +219,45 @@ def _compute_findings(tts_df: pd.DataFrame, stt_df: pd.DataFrame) -> list[str]:
                 grp_ttfb = ttfb_sub.groupby("provider")["ttfb_p50_s"].median().reset_index()
                 best_ttfb = grp_ttfb.loc[grp_ttfb["ttfb_p50_s"].idxmin()]
                 lines.append(
-                    f"- **Best TTFB (streaming):** `{best_ttfb['provider']}` at "
+                    f"- **Mejor TTFB (streaming):** `{best_ttfb['provider']}` en "
                     f"**{_fmt(best_ttfb['ttfb_p50_s'], 3)}s** p50. "
-                    f"OpenAI `tts-1-hd` was benchmarked in batch mode — no TTFB recorded."
+                    f"OpenAI `tts-1-hd` fue evaluado en modo batch — sin TTFB registrado."
                 )
             lines.append("")
 
-        # ── TTS Quality ───────────────────────────────────────────────────────
-        lines += ["#### TTS — Audio Quality", ""]
+        # ── TTS Calidad de audio ──────────────────────────────────────────────
+        lines += ["#### TTS — Calidad de Audio", ""]
         if "clipping_pct" in tts_df.columns:
             clip = tts_df.groupby("provider")["clipping_pct"].mean().reset_index()
             for _, row in clip.iterrows():
                 pct = row["clipping_pct"] * 100
                 if pct > 50:
                     lines.append(
-                        f"- ⚠️  **`{row['provider']}`** — audio clipping in **{pct:.0f}%** of samples "
-                        f"(peak levels exceed 0 dBFS). Apply a −1 dBFS ceiling limiter before playback."
+                        f"- ⚠️  **`{row['provider']}`** — saturación (clipping) en **{pct:.0f}%** de las muestras "
+                        f"(picos superan 0 dBFS). Aplicar un limitador de techo −1 dBFS antes de reproducir."
                     )
                 elif pct > 0:
                     lines.append(
-                        f"- ⚠️  **`{row['provider']}`** — occasional clipping detected ({pct:.1f}% of samples)."
+                        f"- ⚠️  **`{row['provider']}`** — saturación ocasional detectada ({pct:.1f}% de las muestras)."
                     )
                 else:
                     lines.append(
-                        f"- ✅  **`{row['provider']}`** — no clipping detected. Clean output levels."
+                        f"- ✅  **`{row['provider']}`** — sin saturación detectada. Niveles de salida limpios."
                     )
         lines.append("")
 
-    # ── TTS Cost ──────────────────────────────────────────────────────────────
-    lines += ["#### TTS — Cost", ""]
+    # ── TTS Costo ─────────────────────────────────────────────────────────────
+    lines += ["#### TTS — Costo", ""]
     lines += [
-        "- `openai/tts-1-hd` is priced at **$30 / 1M chars** — 2× the cost of Deepgram Aura-2 ($15 / 1M chars).",
-        "- For cost-sensitive workloads: `deepgram/aura-2` offers competitive TTFB (~0.65s) at half the price, "
-        "but audio clipping must be corrected post-synthesis.",
-        "- `openai/gpt-4o-mini-tts` ($12 / 1M chars) is a lower-cost OpenAI alternative not yet included in this benchmark.",
+        "- `openai/tts-1-hd` tiene un precio de **$30 / 1M chars** — el doble que Deepgram Aura-2 ($15 / 1M chars).",
+        "- Para cargas sensibles al costo: `deepgram/aura-2` ofrece TTFB competitivo (~0.65s) a mitad de precio, "
+        "pero la saturación de audio debe corregirse en post-síntesis.",
+        "- `openai/gpt-4o-mini-tts` ($12 / 1M chars) es una alternativa OpenAI más económica aún no incluida en este benchmark.",
         "",
     ]
 
-    # ── STT Accuracy ──────────────────────────────────────────────────────────
-    lines += ["#### STT — Accuracy (WER)", ""]
+    # ── STT Precisión ────────────────────────────────────────────────────────
+    lines += ["#### STT — Precisión (WER)", ""]
 
     if not stt_df.empty and "wer_mean" in stt_df.columns:
         clean_mask = stt_df["audio_id"].str.contains("clean", na=False)
@@ -265,9 +265,9 @@ def _compute_findings(tts_df: pd.DataFrame, stt_df: pd.DataFrame) -> list[str]:
         medium_mask = stt_df["audio_id"].str.contains("medium", na=False)
 
         for category, mask, label in [
-            ("clean", clean_mask, "clean"),
-            ("noise", noise_mask, "noisy (−30 dBFS)"),
-            ("medium", medium_mask, "codes/numbers"),
+            ("clean", clean_mask, "audio limpio"),
+            ("noise", noise_mask, "audio con ruido (−30 dBFS)"),
+            ("medium", medium_mask, "códigos/números"),
         ]:
             sub = stt_df[mask]
             if sub.empty:
@@ -282,71 +282,71 @@ def _compute_findings(tts_df: pd.DataFrame, stt_df: pd.DataFrame) -> list[str]:
                 if math.isnan(best["wer_mean"]):
                     continue
                 lines.append(
-                    f"- **{lang.upper()} {label} — best WER:** `{best['provider']}` "
-                    f"at **{_fmt(best['wer_mean'], 3)}** ({_quality_label(best['wer_mean'])}). "
-                    f"Worst: `{worst['provider']}` at {_fmt(worst['wer_mean'], 3)}."
+                    f"- **{lang.upper()} {label} — mejor WER:** `{best['provider']}` "
+                    f"en **{_fmt(best['wer_mean'], 3)}** ({_quality_label(best['wer_mean'])}). "
+                    f"Peor: `{worst['provider']}` en {_fmt(worst['wer_mean'], 3)}."
                 )
         lines.append("")
 
         # Noise note
         lines.append(
-            "> **Note on noisy audio:** All providers degrade significantly at −30 dBFS noise. "
-            "Apply upstream denoising (e.g., RNNoise, DeepFilterNet) before transcription in real deployments."
+            "> **Nota sobre audio con ruido:** Todos los proveedores degradan significativamente con ruido a −30 dBFS. "
+            "Aplicar reducción de ruido previa (p. ej. RNNoise, DeepFilterNet) antes de transcribir en producción."
         )
         lines.append("")
 
-        # ── STT Latency ───────────────────────────────────────────────────────
-        lines += ["#### STT — Latency", ""]
+        # ── STT Latencia ──────────────────────────────────────────────────────
+        lines += ["#### STT — Latencia", ""]
         lat_grp = stt_df.groupby("provider")[["total_p50_s", "total_p90_s"]].median().reset_index()
         if not lat_grp.empty:
             best_l = lat_grp.loc[lat_grp["total_p50_s"].idxmin()]
             worst_l = lat_grp.loc[lat_grp["total_p50_s"].idxmax()]
             lines.append(
-                f"- **Fastest STT (median p50):** `{best_l['provider']}` "
-                f"at **{_fmt(best_l['total_p50_s'])}s** (p90 {_fmt(best_l['total_p90_s'])}s)."
+                f"- **STT más rápido (mediana p50):** `{best_l['provider']}` "
+                f"en **{_fmt(best_l['total_p50_s'])}s** (p90 {_fmt(best_l['total_p90_s'])}s)."
             )
             lines.append(
-                f"- **Slowest STT (median p50):** `{worst_l['provider']}` "
-                f"at **{_fmt(worst_l['total_p50_s'])}s** (p90 {_fmt(worst_l['total_p90_s'])}s). "
-                f"Extra latency comes from batch job polling overhead."
+                f"- **STT más lento (mediana p50):** `{worst_l['provider']}` "
+                f"en **{_fmt(worst_l['total_p50_s'])}s** (p90 {_fmt(worst_l['total_p90_s'])}s). "
+                f"La latencia extra proviene del overhead de polling en jobs batch."
             )
         lines.append("")
 
-        # ── STT Cost ──────────────────────────────────────────────────────────
-        lines += ["#### STT — Cost", ""]
+        # ── STT Costo ─────────────────────────────────────────────────────────
+        lines += ["#### STT — Costo", ""]
         cost_grp = stt_df[stt_df["cost_per_call_usd"] > 0].groupby("provider")["cost_per_call_usd"].mean().reset_index()
         if not cost_grp.empty:
             cheapest = cost_grp.loc[cost_grp["cost_per_call_usd"].idxmin()]
             priciest = cost_grp.loc[cost_grp["cost_per_call_usd"].idxmax()]
             ratio = priciest["cost_per_call_usd"] / cheapest["cost_per_call_usd"] if cheapest["cost_per_call_usd"] > 0 else float("nan")
             lines.append(
-                f"- **Cheapest STT:** `{cheapest['provider']}` at avg "
-                f"**${_fmt(cheapest['cost_per_call_usd'] * 100, 4)}¢/call** per audio clip."
+                f"- **STT más económico:** `{cheapest['provider']}` a un promedio de "
+                f"**${_fmt(cheapest['cost_per_call_usd'] * 100, 4)}¢/llamada** por clip de audio."
             )
             lines.append(
-                f"- **Most expensive STT:** `{priciest['provider']}` at avg "
-                f"${_fmt(priciest['cost_per_call_usd'] * 100, 4)}¢/call "
-                f"(~{_fmt(ratio, 1)}× the cost of {cheapest['provider']})."
+                f"- **STT más caro:** `{priciest['provider']}` a un promedio de "
+                f"${_fmt(priciest['cost_per_call_usd'] * 100, 4)}¢/llamada "
+                f"(~{_fmt(ratio, 1)}× el costo de {cheapest['provider']})."
             )
         lines.append("")
 
-    # ── Recommendations table ─────────────────────────────────────────────────
+    # ── Tabla de recomendaciones ──────────────────────────────────────────────
     lines += [
-        "#### Recommendations by use case",
+        "#### Recomendaciones por caso de uso",
         "",
-        "| Scenario | Recommended | Rationale |",
+        "| Escenario | Recomendado | Justificación |",
         "|---|---|---|",
-        "| Real-time TTS (EN, low latency) | `openai/tts-1-hd` | Fastest batch total (~4s p50); "
-        "add streaming for sub-1s TTFB |",
-        "| Real-time TTS (ES, low latency) | `openai/tts-1-hd` | ~3.75s p50 vs Deepgram ~8.5s on ES |",
-        "| Batch TTS / cost-sensitive | `deepgram/aura-2` | TTFB ~0.65s, $15/1M chars; "
-        "apply output limiter to fix clipping |",
-        "| STT clean audio (EN + ES) | `openai/whisper-1` (standard) | Best WER on clean audio, "
-        "fastest, cheapest |",
-        "| STT noisy environment | Denoise first, then any | Both providers score ~WER 0.60+ at −30 dBFS |",
-        "| STT at scale / cost | `openai/whisper-1` | ~4× cheaper than Speechmatics |",
-        "| STT streaming / real-time | `speechmatics` | Only provider with true streaming API; "
-        "Whisper is batch-only |",
+        "| TTS en tiempo real (EN, baja latencia) | `openai/tts-1-hd` | Total batch más rápido (~4s p50); "
+        "agregar streaming para TTFB <1s |",
+        "| TTS en tiempo real (ES, baja latencia) | `openai/tts-1-hd` | ~3.75s p50 vs Deepgram ~8.5s en ES |",
+        "| TTS batch / sensible al costo | `deepgram/aura-2` | TTFB ~0.65s, $15/1M chars; "
+        "aplicar limitador de salida para corregir saturación |",
+        "| STT audio limpio (EN + ES) | `openai/whisper-1` (standard) | Mejor WER en audio limpio, "
+        "más rápido y económico |",
+        "| STT en entorno ruidoso | Aplicar denoising primero, luego cualquiera | Ambos proveedores obtienen WER ~0.60+ a −30 dBFS |",
+        "| STT a escala / costo | `openai/whisper-1` | ~4× más barato que Speechmatics |",
+        "| STT streaming / tiempo real | `speechmatics` | Único proveedor con API de streaming real; "
+        "Whisper es solo batch |",
     ]
 
     return lines
@@ -362,18 +362,18 @@ def build_report(results_dir: Path) -> str:
     lines: list[str] = []
 
     lines += [
-        "# TTS / STT Benchmark Report",
+        "# Reporte de Benchmark TTS / STT",
         "",
-        f"**Generated:** {__import__('datetime').datetime.now(__import__('datetime').timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}  ",
-        f"**Results directory:** `{results_dir}`  ",
-        f"**TTS samples:** {len(tts_rows)} · **STT samples:** {len(stt_rows)}",
+        f"**Generado:** {__import__('datetime').datetime.now(__import__('datetime').timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}  ",
+        f"**Directorio de resultados:** `{results_dir}`  ",
+        f"**Muestras TTS:** {len(tts_rows)} · **Muestras STT:** {len(stt_rows)}",
         "",
         "---",
         "",
     ]
 
-    # ── TTS Section ──────────────────────────────────────────────────────────
-    lines += ["## 1. TTS Results", ""]
+    # ── Sección TTS ───────────────────────────────────────────────────────────
+    lines += ["## 1. Resultados TTS", ""]
 
     if not tts_df.empty:
         # Overview table: per provider × language
@@ -397,10 +397,10 @@ def build_report(results_dir: Path) -> str:
         }).reset_index()
 
         lines += [
-            "### 1.1 Latency & Cost Overview (per provider × language)",
+            "### 1.1 Resumen de Latencia y Costo (por proveedor × idioma)",
             "",
-            "> TTFB = Time to First Byte/Chunk · Total = Wall-clock synthesis time · "
-            "Cost = per-call estimate based on avg text length",
+            "> TTFB = Tiempo al primer byte/chunk · Total = Tiempo total de síntesis · "
+            "Costo = estimado por llamada según longitud promedio del texto",
             "",
             _df_to_md(overview),
             "",
@@ -412,19 +412,19 @@ def build_report(results_dir: Path) -> str:
             "ttfb_p50_s", "ttfb_p90_s", "total_p50_s", "total_p90_s",
         ]
         lines += [
-            "### 1.2 Latency Detail (per text)",
+            "### 1.2 Detalle de Latencia (por texto)",
             "",
             _df_to_md(tts_df[detail_cols]),
             "",
         ]
 
-        # Quality
+        # Calidad
         quality_cols = [
             "provider", "lang", "text_id",
             "clipping_pct", "abrupt_cut_pct",
         ]
         lines += [
-            "### 1.3 Quality Checks",
+            "### 1.3 Verificaciones de Calidad",
             "",
             _df_to_md(tts_df[quality_cols]),
             "",
@@ -432,9 +432,9 @@ def build_report(results_dir: Path) -> str:
 
         # Cost projection
         lines += [
-            "### 1.4 Cost Projection",
+            "### 1.4 Proyección de Costo",
             "",
-            "| Provider | Cost per 1M chars (USD) | Projected cost / 1k calls @ 200 chars avg |",
+            "| Proveedor | Costo por 1M chars (USD) | Costo estimado / 1k llamadas @ 200 chars promedio |",
             "|---|---|---|",
         ]
         for pm, cost in TTS_COST_PER_1M_CHARS.items():
@@ -442,28 +442,57 @@ def build_report(results_dir: Path) -> str:
             lines.append(f"| {pm} | ${cost:.2f} | ${proj:.4f} |")
         lines.append("")
     else:
-        lines += ["_No TTS results found._", ""]
+        lines += ["_No se encontraron resultados TTS._", ""]
 
-    # ── MOS Checklist ────────────────────────────────────────────────────────
+    # ── Checklist MOS ─────────────────────────────────────────────────────────
     lines += [
-        "### 1.5 MOS / Subjective Quality Checklist",
+        "### 1.5 Checklist de Calidad Subjetiva (MOS)",
         "",
-        "Rate each provider on a 1–5 scale after listening to the generated samples.",
+        "Escucha cada archivo de audio generado y puntúa del 1 al 5 en cada dimensión.",
         "",
-        "| Provider | Model | Lang | Naturalness (1–5) | Intelligibility (1–5) "
-        "| Prosody (1–5) | Accent (1–5) | Notes |",
-        "|---|---|---|---|---|---|---|---|",
-        "| openai | tts-1-hd | es | | | | | |",
-        "| openai | tts-1-hd | en | | | | | |",
-        "| deepgram | aura-2 | es | | | | | |",
-        "| deepgram | aura-2 | en | | | | | |",
-        "| google | gemini-2.5-flash | es | | | | | |",
-        "| google | gemini-2.5-flash | en | | | | | |",
+        "**Escala:** 1 = Inaceptable · 2 = Malo · 3 = Regular · 4 = Bueno · 5 = Excelente",
+        "",
+        "**Archivos de referencia:** `results/tts/<timestamp>/<provider>/<model>/<lang>/<text_id>_rep01.wav`",
+        "",
+        "| Proveedor | Modelo | Idioma | Texto | Naturalidad (1–5) | Inteligibilidad (1–5) "
+        "| Prosodia (1–5) | Acento (1–5) | Notas |",
+        "|---|---|---|---|---|---|---|---|---|",
+        "| openai | tts-1-hd | es | es_short_01 | | | | | |",
+        "| openai | tts-1-hd | es | es_short_02 | | | | | |",
+        "| openai | tts-1-hd | es | es_medium_01 | | | | | |",
+        "| openai | tts-1-hd | es | es_medium_02 | | | | | |",
+        "| openai | tts-1-hd | es | es_long_01 | | | | | |",
+        "| openai | tts-1-hd | es | es_numbers_01 | | | | | |",
+        "| openai | tts-1-hd | es | es_acronyms_01 | | | | | |",
+        "| openai | tts-1-hd | en | en_short_01 | | | | | |",
+        "| openai | tts-1-hd | en | en_short_02 | | | | | |",
+        "| openai | tts-1-hd | en | en_medium_01 | | | | | |",
+        "| openai | tts-1-hd | en | en_medium_02 | | | | | |",
+        "| openai | tts-1-hd | en | en_long_01 | | | | | |",
+        "| openai | tts-1-hd | en | en_numbers_01 | | | | | |",
+        "| openai | tts-1-hd | en | en_acronyms_01 | | | | | |",
+        "| deepgram | aura-2 | es | es_short_01 | | | | | |",
+        "| deepgram | aura-2 | es | es_short_02 | | | | | |",
+        "| deepgram | aura-2 | es | es_medium_01 | | | | | |",
+        "| deepgram | aura-2 | es | es_medium_02 | | | | | |",
+        "| deepgram | aura-2 | es | es_long_01 | | | | | |",
+        "| deepgram | aura-2 | es | es_numbers_01 | | | | | |",
+        "| deepgram | aura-2 | es | es_acronyms_01 | | | | | |",
+        "| deepgram | aura-2 | en | en_short_01 | | | | | |",
+        "| deepgram | aura-2 | en | en_short_02 | | | | | |",
+        "| deepgram | aura-2 | en | en_medium_01 | | | | | |",
+        "| deepgram | aura-2 | en | en_medium_02 | | | | | |",
+        "| deepgram | aura-2 | en | en_long_01 | | | | | |",
+        "| deepgram | aura-2 | en | en_numbers_01 | | | | | |",
+        "| deepgram | aura-2 | en | en_acronyms_01 | | | | | |",
+        "",
+        "> **⚠️ Nota sobre Deepgram:** Se detectó saturación (clipping) en el 100% de las muestras.",
+        "> Antes de escuchar, normaliza el volumen con: `ffmpeg -i input.wav -af loudnorm output.wav`",
         "",
     ]
 
-    # ── STT Section ──────────────────────────────────────────────────────────
-    lines += ["## 2. STT Results", ""]
+    # ── Sección STT ───────────────────────────────────────────────────────────
+    lines += ["## 2. Resultados STT", ""]
 
     if not stt_df.empty:
         overview_cols = [
@@ -486,9 +515,9 @@ def build_report(results_dir: Path) -> str:
         }).reset_index()
 
         lines += [
-            "### 2.1 Latency & Quality Overview (per provider × language)",
+            "### 2.1 Resumen de Latencia y Calidad (por proveedor × idioma)",
             "",
-            "> TTFT = Time to First Transcript · WER/CER = against ground-truth transcripts",
+            "> TTFT = Tiempo al primer transcript · WER/CER = comparado contra transcripciones de referencia",
             "",
             _df_to_md(overview),
             "",
@@ -500,56 +529,58 @@ def build_report(results_dir: Path) -> str:
             "wer_mean", "cer_mean",
         ]
         lines += [
-            "### 2.2 Detail per Audio File",
+            "### 2.2 Detalle por Archivo de Audio",
             "",
             _df_to_md(stt_df[detail_cols]),
             "",
         ]
 
-        # Cost projection
+        # Proyección de costo
         lines += [
-            "### 2.3 Cost Projection",
+            "### 2.3 Proyección de Costo",
             "",
-            "| Provider | Cost per minute (USD) | Cost per hour | Projected / 1k min |",
+            "| Proveedor | Costo por minuto (USD) | Costo por hora | Proyectado / 1k min |",
             "|---|---|---|---|",
         ]
         for pm, cpm in STT_COST_PER_MINUTE.items():
             lines.append(f"| {pm} | ${cpm:.4f} | ${cpm * 60:.2f} | ${cpm * 1000:.2f} |")
         lines.append("")
     else:
-        lines += ["_No STT results found._", ""]
+        lines += ["_No se encontraron resultados STT._", ""]
 
     # ── Recommendations ──────────────────────────────────────────────────────
     # Compute key numbers for the findings section
     _findings = _compute_findings(tts_df, stt_df)
 
     lines += [
-        "## 3. Executive Summary & Recommendations",
+        "## 3. Resumen Ejecutivo y Recomendaciones",
         "",
-        "### 3.1 Key Findings",
+        "### 3.1 Hallazgos Clave",
         "",
     ]
     lines += _findings
     lines += [
         "",
-        "### 3.2 Assumptions & Limitations",
+        "### 3.2 Supuestos y Limitaciones",
         "",
-        "- All tests run from a single geographic location; latency may differ across regions.",
-        "- Network jitter is not controlled; results represent best-effort measurements.",
-        "- TTS quality is partially subjective (MOS checklist must be completed manually).",
-        "- Audio files for STT must be recorded or sourced separately and placed in `dataset/stt/<lang>/`.",
-        "- Costs are estimated based on public pricing as of 2026-03; verify before budgeting.",
-        "- Speechmatics streaming results depend on the RT endpoint region selected.",
+        "- Todas las pruebas se ejecutaron desde una única ubicación geográfica; la latencia puede variar por región.",
+        "- El jitter de red no está controlado; los resultados representan mediciones en condiciones normales.",
+        "- La calidad TTS es parcialmente subjetiva (el checklist MOS debe completarse manualmente, ver §1.5).",
+        "- Los archivos de audio para STT se generaron con OpenAI TTS `tts-1`, voz `alloy`; resultados pueden diferir con audio real de producción.",
+        "- Los costos están estimados con precios públicos a marzo de 2026; verificar antes de presupuestar.",
+        "- Los resultados de streaming de Speechmatics dependen de la región del endpoint RT seleccionado.",
         "",
-        "### 3.3 Next Steps",
+        "### 3.3 Próximos Pasos",
         "",
-        "1. Complete MOS checklist (§ 1.5) by listening to generated audio samples.",
-        "2. Record or source real STT audio files and populate ground-truth manifests.",
-        "3. Re-run benchmark from a staging environment (closer to production network).",
-        "4. Integrate winning provider(s) into the voice feature pipeline.",
+        "1. Completar el checklist MOS (§1.5) escuchando los archivos de audio generados en `results/tts/`.",
+        "2. Evaluar `openai/gpt-4o-mini-tts` ($12/1M chars) como alternativa económica a `tts-1-hd`.",
+        "3. Probar TTS en modo streaming (OpenAI con `stream=True`) para obtener TTFB real.",
+        "4. Aplicar un limitador de techo a −1 dBFS sobre las salidas de Deepgram y re-medir MOS.",
+        "5. Re-ejecutar el benchmark STT con audio real de producción (no sintético) para validar resultados.",
+        "6. Integrar el/los proveedor(es) ganadores al pipeline de la funcionalidad de voz.",
         "",
         "---",
-        "_Report generated by [tts-stt-benchmark](https://github.com/jeanmlq10/tts-stt-benchmark)_",
+        "_Reporte generado por [tts-stt-benchmark](https://github.com/jeanmlq10/tts-stt-benchmark)_",
     ]
 
     return "\n".join(lines) + "\n"
